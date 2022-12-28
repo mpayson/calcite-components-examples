@@ -1,33 +1,31 @@
-import React, { useState } from "react";
-import "@esri/calcite-components/dist/components/calcite-button";
-import "@esri/calcite-components/dist/components/calcite-icon";
-import "@esri/calcite-components/dist/components/calcite-slider";
-import {
-  CalciteButton,
-  CalciteIcon,
-  CalciteSlider,
-} from "@esri/calcite-components-react";
+import React, { useEffect, useState, useRef } from "react";
+
 import "@esri/calcite-components/dist/calcite/calcite.css";
 
+import "@esri/calcite-components/dist/components/calcite-button";
+import "@esri/calcite-components/dist/components/calcite-modal";
+// import { defineCustomElements } from "@esri/calcite-components/dist/loader";
+// defineCustomElements(window);
+
 function App() {
-  const [sliderValue, setSliderValue] = useState(50);
+  const ref = useRef();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      ref.current.setFocus();
+    }
+  }, [open]);
 
   return (
     <>
-      <h1>
-        Hello, React <CalciteIcon icon="banana" />
-      </h1>
-      <CalciteButton onClick={(e) => setSliderValue(0)}>
-        Reset
-      </CalciteButton>
-      <CalciteSlider
-        min="1"
-        max="100"
-        value={sliderValue}
-        step="1"
-        onCalciteSliderUpdate={(e) => setSliderValue(e.target.value)}
-      />
-      <p>The slider currently has a value of {sliderValue}</p>
+      <calcite-button onClick={() => setOpen(true)}>Click me!</calcite-button>
+      {open && (
+        <calcite-modal open ref={ref}>
+          <div slot="header">Demo</div>
+          <div slot="content">hi!</div>
+        </calcite-modal>
+      )}
     </>
   );
 }
